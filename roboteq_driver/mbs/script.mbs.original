@@ -4,7 +4,7 @@ Dim last_mode[2] as Integer
 
 ' Mode values are:
 '  -1 stopped
-'  0 open loop (-speed-) mode
+'  0 speed mode
 '  1 position mode
 ' These correspond to the constants in roboteq_msgs/Command. The motor begins in stopped
 ' mode, the setup for which is run when last_mode[0] != VAR[1].
@@ -23,7 +23,7 @@ setconfig(_AMOD, 2, 1) ' Analog input 2 absolute mode
 
 ' Undervoltage/overvoltage limits (p214)
 setconfig(_OVL, 700)
-setconfig(_UVL, 150)
+setconfig(_UVL, 280)
 
 for ch = 1 andwhile ch <= MAX_CHANNELS evaluate ch++
 	' Encoder, speed config (p208, p221)
@@ -58,12 +58,12 @@ top:
 				setcommand(_G, ch, 0)
 			end if
 
-			' Motor in open loop (-velocity-control-) mode.
+			' Motor in velocity-control mode.
 			if getvalue(_VAR, ch) = 0 then
-				setconfig(_MMOD, ch, 0)
-				setconfig(_KP, ch, 0)
-				setconfig(_KI, ch, 1)
-				setconfig(_KD, ch, 0)
+				setconfig(_MMOD, ch, 1)
+				setconfig(_KP, ch, 20)
+				setconfig(_KI, ch, 40)
+				setconfig(_KD, ch, 10)
 				setconfig(_ICAP, ch, 100)
 			end if
 
