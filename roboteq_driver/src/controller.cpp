@@ -35,6 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <unistd.h>
+#include <string>
 #include <iostream>
 #include <sstream>
 
@@ -109,6 +110,8 @@ void Controller::read() {
       } else if (msg[1] == 'f') {
         processFeedback(msg);
       }
+    } else if (msg.find("FID") != std::string::npos) {
+      ROS_INFO("Found Controller: %s", msg);
     } else {
       // Unknown other message.
       ROS_WARN_STREAM("Unknown serial message received: " << msg);
@@ -122,7 +125,7 @@ void Controller::read() {
         startScript();
         flush();
       } else {
-        ROS_DEBUG("Attempting to download MBS program.");
+        ROS_INFO("Attempting to download MBS program.");
         if (downloadScript()) {
           start_script_attempts_ = 0;
         }
@@ -225,10 +228,10 @@ bool Controller::downloadScript() {
   // Look for special ack from SLD.
   for (int find_ack = 0; find_ack < 7; find_ack++) {
     std::string msg = serial_->readline(max_line_length, eol);
-    ROS_DEBUG_STREAM_NAMED("serial", "HLD-RX: " << msg);
-    if (msg == "HLD\r") goto found_ack;
+    ROS_DEBUG_STREAM_NAMED("serial", "FBL-2360: " << msg);
+    if (msg == "FBL\r") goto found_ack;
   }
-  ROS_DEBUG("Could not enter download mode.");
+  ROS_WARN("Could not enter download mode.");
   return false;
   found_ack:
 
@@ -243,6 +246,7 @@ bool Controller::downloadScript() {
     if (ack != "+\r") return false;
     line_num++;
   }
+  ROS_INFO("HEX PROGRAM SENT");
   return true;
 }
 
