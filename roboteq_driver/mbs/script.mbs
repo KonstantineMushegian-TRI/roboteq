@@ -65,6 +65,7 @@ top:
 				setconfig(_KI, ch, 1)
 				setconfig(_KD, ch, 0)
 				setconfig(_ICAP, ch, 100)
+				setcommand(_G, ch, 0)
 			end if
 
 			' Motor in position-control mode.
