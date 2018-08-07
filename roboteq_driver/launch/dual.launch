@@ -6,7 +6,7 @@
             baud: 115200
         </rosparam>
         <rosparam  if="$(arg dual)">
-            channels: ['fwdrv', 'lr']
+            channels: ['one', 'two']
         </rosparam>
     </node>
 </launch>

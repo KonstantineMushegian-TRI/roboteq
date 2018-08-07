@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Link to generated source from Microbasic script file.
 extern const char* script_lines[];
-extern const int script_ver = 28;
+extern const int script_ver = 27;
 
 namespace roboteq {
 
@@ -111,7 +111,7 @@ void Controller::read() {
         processFeedback(msg);
       }
     } else if (msg.find("FID") != std::string::npos) {
-      ROS_INFO("Found Controller: %s", msg);
+      ROS_INFO("Found Controller: %s", msg.c_str());
     } else {
       // Unknown other message.
       ROS_WARN_STREAM("Unknown serial message received: " << msg);
@@ -229,7 +229,11 @@ bool Controller::downloadScript() {
   for (int find_ack = 0; find_ack < 7; find_ack++) {
     std::string msg = serial_->readline(max_line_length, eol);
     ROS_DEBUG_STREAM_NAMED("serial", "FBL-2360: " << msg);
-    if (msg == "FBL\r") goto found_ack;
+    if (msg == "HLD\r") {
+	goto found_ack;
+    } else {
+	ROS_INFO("MSG != HLD");
+    }
   }
   ROS_WARN("Could not enter download mode.");
   return false;
