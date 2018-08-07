@@ -9,8 +9,9 @@ Dim last_mode[2] as Integer
 ' These correspond to the constants in roboteq_msgs/Command. The motor begins in stopped
 ' mode, the setup for which is run when last_mode[0] != VAR[1].
 last_mode[0] = -127
-setcommand(_VAR, 1, -1)
-setcommand(_VAR, 2, -1)
+last_mode[1] = -127
+setcommand(_VAR, 1, 0)
+setcommand(_VAR, 2, 0)
 ' Motor controller configuration. Much of this is particular to Grizzly
 ' and can be generalized/parameterized as the need arises. Page numbers
 ' are a reference to this document:
@@ -24,9 +25,6 @@ setconfig(_AMOD, 2, 1) ' Analog input 2 absolute mode
 ' Undervoltage/overvoltage limits (p214)
 setconfig(_OVL, 700)
 setconfig(_UVL, 150)
-
-setconfig(_MMOD, 1, 0)
-setconfig(_MMOD, 2, 0)
 
 for ch = 1 andwhile ch <= MAX_CHANNELS evaluate ch++
 	' Encoder, speed config (p208, p221)
