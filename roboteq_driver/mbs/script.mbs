@@ -2,6 +2,9 @@ SCRIPT_VER=29
 MAX_CHANNELS=2
 Dim last_mode[2] as Integer
 
+setcommand(_G, 1, 0)
+setcommand(_G, 2, 0)
+
 ' Mode values are:
 '  -1 stopped
 '  0 open loop (-speed-) mode
